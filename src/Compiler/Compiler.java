@@ -1,46 +1,81 @@
 package Compiler;
 
 import Lexer.*;
-import Parser.Parser;
+//import Parser.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 
-public class Compiler
-{
+public class Compiler {
     private static final CodeGenerator generator = new CodeGenerator();
-    public static void main(String args[]) throws IOException   //just basic mainclass
+    static boolean hadError = false;
+
+
+    public static void main(String[] args) throws IOException   //just basic mainclass
     {
-        if(args.length > 1)                                     //testing if the right amount of arguments is given
-        {
-            System.out.println("Usage: jlox [script]");
+        //If too many arguments were passed, we print the usage
+        if (args.length > 1) {
+            System.out.println("Usage: pl0 [script]");
             System.exit(64);
         }
-        else if(args.length == 1)                               //yes == we run the file
-        {
+        //If file was passed we start the runFile function
+        else if (args.length == 1) {
             runFile(args[0]);
+        }
+        else{
+            runPrompt();
+        }
+        //in the future we could make a runprompt function here so that if no file is passed, we can run an interactive prompt
+        //for that we would need to reset the hadError variable after each line
+    }
+
+    //If file was passed, we call this function
+    private static void runFile(String Path) throws IOException {
+        //take the data from the file and pass it in a byte-array
+        //this gets converted to a String and passed to run()
+        byte[] filedata = Files.readAllBytes(Paths.get(Path));
+        run(new String(filedata));
+        if (hadError) System.exit(65); //if there was an error, exit with code 65
+    }
+
+    private static void runPrompt() throws IOException {
+        InputStreamReader input = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input);
+
+        for (; ; ) {
+            System.out.print("> ");
+            String line = reader.readLine();
+            if (line == null) break;
+            run(line);
         }
     }
 
-    private static void runFile(String Path) throws IOException
-    {
-        byte[] filedata = Files.readAllBytes(Paths.get(Path));
-        run(new String(filedata));
-    }
-
-    private static void run(String source)
-    {
+    private static void run(String source) {
         Lexer lexer = new Lexer(source);
-        List<Token> tokens = lexer.scanTokens(); //todo
+        List<Token> tokens = lexer.lexSomeTokens();
 
-        Parser parser = new Parser(tokens);
-        List<Stmt> statements = parser.parse();
-
-        generator.generate(statements);
+        for (Token token : tokens) {
+            System.out.println(token);
+        }
 
     }
+
+    public static void error(int line, String message) {
+        //report an error on a specific line, with a message
+        //where is an optional parameter that can be more specific about the error location but it needs to implemented to work
+        report(line, "", message);
+    }
+
+    private static void report(int line, String where, String message) {
+        //print the error message to the standard error output
+        System.err.println("[line " + line + "] Error" + where + ": " + message);
+        hadError = true;
+    }
+
 
 }

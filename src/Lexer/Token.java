@@ -1,5 +1,7 @@
 package Lexer;
 
+
+
 public class Token
 {
     final TokenType type;                                           //a Variable type with the datatype TokenType from the Enumclass.
