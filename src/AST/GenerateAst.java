@@ -4,6 +4,41 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BinaryOperator;
+
+/*
+Grammar for PL/0
+
+                    FOR EXPRESSIONS
+
+Expression: literal | unary | binary | grouping;
+
+Literals -> Number;
+
+Grouping -> '(' Expression ')';
+
+Unary -> ( '-' ) Expression;
+
+Binary -> Expression ArithOperator Expression;
+
+ArithOperator -> '+' | '-' | '*' | '/';
+
+
+
+                    FOR CONDITIONS
+
+Condition: UnaryCondition | BinaryCondition;
+UnaryCondition -> 'odd' Expression;
+BinaryCondition -> Expression RelOperator Expression;
+RelOperator -> '=' | '#=' | '<' | '<=' | '>' | '>=';
+
+
+
+                    FOR STATEMENTS
+
+
+ */
+
 
 public class GenerateAst
 {
@@ -16,7 +51,10 @@ public class GenerateAst
         }
         String outputDir = args[0];
         defineAst(outputDir, "Expr", Arrays.asList(
-
+                "Binary  : Expr left, Token operator, Expr right",
+                "Grouping: Expr expression",
+                "Literal : Object value",
+                "Unary   : Token operator, Expr right"
 
         ));
         defineAst(outputDir, "Stmt", Arrays.asList(
@@ -29,7 +67,7 @@ public class GenerateAst
         String path = outputDir + "/" + baseName + ".java";
         PrintWriter writer = new PrintWriter(path, "UTF-8");
 
-        writer.println("package interpreter;");
+        writer.println("package Types;");
         writer.println();
         writer.println("import java.util.List;");
         writer.println();
