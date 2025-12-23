@@ -5,11 +5,12 @@ Das Problem was versucht wird zu lösen ist folgendes:
 Hätten wir eine Tabelle mit
 
 Spalten : Methoden 
-Zeilen : Klassen.
 
-Wöllten wir eine Spalte hinzufügen, müssten alle Methoden für diese neue Klasse definiert werden
+Zeilen : Klassen
 
-Wöllten wir eine Methode hinzufügen, müssten alle Klassen diese neue Methode implementieren.
+
+*Wöllten wir eine Spalte hinzufügen, müssten alle Methoden für diese neue Klasse definiert werden.*
+*Wöllten wir eine Methode hinzufügen, müssten alle Klassen diese neue Methode implementieren.*
 
 ***Das ist ziemlich umständlich und wir von verschiedenen Programmiersprachen besser/schlechter gelöst.***
 
