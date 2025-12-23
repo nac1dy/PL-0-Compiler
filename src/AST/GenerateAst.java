@@ -57,7 +57,12 @@ public class GenerateAst
                 "Unary   : Token operator, Expr right"
 
         ));
+        //TODO
         defineAst(outputDir, "Stmt", Arrays.asList(
+
+        ));
+        //TODO
+        defineAst(outputDir, "Condition", Arrays.asList(
 
         ));
     }
