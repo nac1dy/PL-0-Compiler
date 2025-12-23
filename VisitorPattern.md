@@ -93,15 +93,20 @@ Und jetzt soll es noch methoden geben, welche von der Pastry Klasse ausgeführt 
 
 Und all das, um neue Methoden hinzuzufügen ohne die Pastry Klassen zu verändern
 
-# Zusammenfasssend
+# Zusammenfassend
 
 Das Visitor Pattern ermöglicht es, neue Operationen auf einer Gruppe von Objekten durchzuführen, ohne die Klassen dieser Objekte zu verändern. 
 Stattdessen wird eine separate Visitor-Klasse erstellt, die die neuen Operationen implementiert. 
 Die Objekte akzeptieren den Visitor und delegieren die Ausführung der Operation an die entsprechende Methode des Visitors.
 
 
+
+
+
+
+
+
+
 Für mehr Informationen dazu:
-https://craftinginterpreters.com/representing-code.html Chapter 5.3.2
-
-https://refactoring.guru/design-patterns/visitor 
-
+- https://craftinginterpreters.com/representing-code.html Chapter 5.3.2
+- https://refactoring.guru/design-patterns/visitor
