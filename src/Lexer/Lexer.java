@@ -15,6 +15,7 @@ public class Lexer {
     private int start = 0;                                          //points to the first character in the lexeme being scanned
     private int current = 0;                                        //points at the character currently being considered
     private int line = 1;                                           //tracks on what source line "current" is on
+    private boolean hadError = false;
 
     public Lexer(String source)                                     //Constuctor
     {
@@ -25,6 +26,10 @@ public class Lexer {
     public List<Token> lexSomeTokens() {
         while (!isAtEnd()) {
             start = current;
+            if(hadError) {
+                Compiler.error(line, "Encountered an error while lexing, stopping lexing process.");
+                break;
+            }
             lexAToken();
         }
         tokens.add(new Token(TokenType.EOF, "", null, line));
@@ -66,13 +71,17 @@ public class Lexer {
                 break;
 
             case ':':
-                addToken(match('=') ? TokenType.ASSIGN : null);
+                if(match('=')) {
+                    addToken(TokenType.ASSIGN);
+                } else {
+                    Compiler.error(line, "Expected '=' after ':'");
+                }
                 break;
             case ';':
                 addToken(TokenType.SEMICOLON);
                 break;
             case '#':
-                addToken(match('=') ? TokenType.NOT_EQUAL : TokenType.NOT);
+                addToken(TokenType.NOT_EQUAL);
                 break;
             case '=':
                 addToken(TokenType.EQUAL);
@@ -173,6 +182,7 @@ public class Lexer {
 
 
 
+
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -203,7 +213,12 @@ public class Lexer {
         while (isDigit(peek())) advance();
 
         if (peek() == '.' && isDigit(peekNext())) {
+            advance(); // consume '.'
+            while (isDigit(peek())) advance();
+
             Compiler.error(line, "Floating point numbers are not supported in PL/0.");
+            hadError = true;
+            return;
         } else {
             addToken(TokenType.NUMBER, Integer.parseInt(source.substring(start, current)));
         }

@@ -4,10 +4,10 @@ package Lexer;
 
 public class Token
 {
-    final TokenType type;                                           //a Variable type with the datatype TokenType from the Enumclass.
-    final String lexeme;                                            //a "blob" like "var" or "="
-    final Object literal;                                           //it's like the datatype, could be a String or a Number or a identifier
-    final int line;                                                 //current line
+    public final TokenType type;                                           //a Variable type with the datatype TokenType from the Enumclass.
+    public final String lexeme;                                            //a "blob" like "var" or "="
+    public final Object literal;                                           //it's like the datatype, could be a String or a Number or a identifier
+    public final int line;                                                 //current line
 
     Token(TokenType type, String lexeme, Object literal, int line)  //basic constructor
     {

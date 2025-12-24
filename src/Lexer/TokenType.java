@@ -5,8 +5,7 @@ public enum TokenType {
 
     //Single-character tokens.
     PLUS, MINUS, STAR, SLASH,                                       // + - * /
-    EQUAL, NOT_EQUAL, LESS, LESS_EQUAL, GREATER, GREATER_EQUAL,     // = <> < <= > >=
-    NOT,                                                            // #
+    EQUAL, NOT_EQUAL, LESS, LESS_EQUAL, GREATER, GREATER_EQUAL,     // = # < <= > >=
     LEFT_PAREN, RIGHT_PAREN,                                        // ( )
     COMMA, SEMICOLON,                                               // , ;
     DOT,                            // .

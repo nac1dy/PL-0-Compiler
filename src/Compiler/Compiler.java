@@ -1,6 +1,9 @@
 package Compiler;
 
 import Lexer.*;
+import Parser.Parser;
+import TestPrinter.ASTPrinter;
+import Types.Expr;
 //import Parser.*;
 
 import java.io.BufferedReader;
@@ -52,6 +55,7 @@ public class Compiler {
             String line = reader.readLine();
             if (line == null) break;
             run(line);
+            hadError = false;
         }
     }
 
@@ -59,9 +63,13 @@ public class Compiler {
         Lexer lexer = new Lexer(source);
         List<Token> tokens = lexer.lexSomeTokens();
 
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
+        Parser parser = new Parser(tokens);
+        Expr expression = parser.parse();
+
+        if(hadError) return;
+
+
+        System.out.println(new ASTPrinter().print(expression));
 
     }
 
@@ -75,6 +83,14 @@ public class Compiler {
         //print the error message to the standard error output
         System.err.println("[line " + line + "] Error" + where + ": " + message);
         hadError = true;
+    }
+
+    public static void error(Token token, String message) {
+        if (token.type == TokenType.EOF) {
+            report(token.line, " at end", message);
+        } else {
+            report(token.line, " at '" + token.lexeme + "'", message);
+        }
     }
 
 

@@ -60,10 +60,11 @@ public class GenerateAst
         //TODO
         defineAst(outputDir, "Stmt", Arrays.asList(
 
-        ));
-        //TODO
-        defineAst(outputDir, "Condition", Arrays.asList(
 
+        ));
+        defineAst(outputDir, "Condition", Arrays.asList(
+                "UnaryCondition : Token operator, Expr expression",
+                "BinaryCondition: Expr left, Token operator, Expr right"
         ));
     }
 
@@ -76,7 +77,9 @@ public class GenerateAst
         writer.println();
         writer.println("import java.util.List;");
         writer.println();
-        writer.println("abstract class " + baseName + '\n' + "{");
+        writer.println("import Lexer.Token;");
+        writer.println();
+        writer.println("public abstract class " + baseName + '\n' + "{");
 
         defineVisitor(writer, baseName, types);
 
@@ -89,13 +92,13 @@ public class GenerateAst
             defineType(writer, baseName, className, fields);
         }
         writer.println();
-        writer.println(" abstract <R> R accept(Visitor<R> visitor);");
+        writer.println(" public abstract <R> R accept(Visitor<R> visitor);");
         writer.println("}");
         writer.close();
     }
     private static void defineVisitor(PrintWriter writer, String baseName, List<String> types)
     {
-        writer.println("    interface Visitor<R>" + '\n' + "{");
+        writer.println("    public interface Visitor<R>" + '\n' + "{");
 
         for(String type : types)
         {
@@ -106,9 +109,9 @@ public class GenerateAst
     }
     private static void defineType(PrintWriter writer, String baseName, String className, String fieldList)
     {
-        writer.println("    static class " + className + " extends " + baseName + '\n' + " {");
+        writer.println("    public static class " + className + " extends " + baseName + '\n' + " {");
 
-        writer.println("    " + className + "(" + fieldList + ")" + '\n' + "{");
+        writer.println("    public " + className + "(" + fieldList + ")" + '\n' + "{");
 
         String[] fields = fieldList.split(", ");
         for(String field : fields)
@@ -120,14 +123,14 @@ public class GenerateAst
 
         writer.println();
         writer.println("    @Override");
-        writer.println("    <R> R accept(Visitor<R> visitor)" + '\n' + "{");
+        writer.println("    public <R> R accept(Visitor<R> visitor)" + '\n' + "{");
         writer.println("    return visitor.visit" + className + baseName + "(this);");
         writer.println("    }");
 
         writer.println();
         for(String field : fields)
         {
-            writer.println("    final " + field + ";");
+            writer.println("    public final " + field + ";");
         }
 
         writer.println(" }");
