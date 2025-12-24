@@ -8,25 +8,21 @@ Precedence: Which operator is evaluated first in an expression with multiple ope
 
 Associativity: The order in which operators of the same precedence are evaluated (left-to-right or right-to-left).
 
-| Name       | Operators     | Associates |
-|------------|---------------|------------|
-| Equality   | =, #=         | Left       |
-| Comparison | \>, >=, <, <= | Left       |
-| Term       | -, +          | Left       |
-| Factor     | /, *          | Left       |
-| Unary      | -, ODD        | Right      |
+| Name   | Operators | Associates |
+|--------|-----------|------------|
+| Term   | -, +      | Left       |
+| Factor | /, *      | Left       |
+| Unary  | -         | Right      |
 
 Because the current Grammar of Expressions is ambiguous, we need to refactor it to take Precedence and Associativity into account.
 
 ```
-expression     → equality ;
+expression     → term ;
 
-equality       → comparison ( ( "#=" | "=" ) comparison )* ;
-comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term           → factor ( ( "-" | "+" ) factor )* ;
 factor         → unary ( ( "/" | "*" ) unary )* ;
 unary          → ( "-" | odd) unary | primary ;
-primary        → NUMBER | "(" expression ")" ;
+primary        → NUMBER | IDENT |  "(" expression ")" ;
 ```
 
 This is the new Grammar, which takes Precedence and Associativity into account and goes from least (equality) to most (primary) precedence.

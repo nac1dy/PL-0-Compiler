@@ -2,13 +2,26 @@ package Parser;
 
 import Lexer.Token;
 import Lexer.TokenType;
-import Lexer.TokenType.*;
 import Types.*;
 import Compiler.Compiler;
 
 import java.util.List;
+/*
+Parser -> condition |  expression | statement
+---------------------------------------------------------------------------------------------------
+expression     → term ;
 
-//TODO Add Condition Parsing
+term           → factor ( ( "-" | "+" ) factor )* ;
+factor         → unary ( ( "/" | "*" ) unary )* ;
+unary          → ( "-" ) unary | primary ;
+primary        → NUMBER | IDENT | "(" expression ")" ;
+---------------------------------------------------------------------------------------------------
+condition      → expression ( "=" | "#" | "<" | "<=" | ">" | ">=" ) expression | odd expression ;
+
+---------------------------------------------------------------------------------------------------
+statement: TODO
+ */
+
 
 public class Parser {
 
@@ -34,28 +47,6 @@ public class Parser {
         return term();
     }
 
-/*
-
-TODO I Will make a hole Condition Parser where this is then parsed
-
-
-    private Expr equality() {
-        //equality -> comparison ( ( "!=" | "==" ) comparison )*
-
-        //this is the first comparison on the left side
-        Expr expr = comparison(); //left expression
-
-        //then we check for more comparisons with equality operators
-        // (...)* -> while-loop
-        while (match(TokenType.NOT_EQUAL, TokenType.EQUAL)) {
-            Token operator = previous();    //operator ( "#", "=" )
-            Expr right = comparison();      //right expression
-            expr = new Expr.Binary(expr, operator, right); //override expr with new Binary expr
-        }
-
-        return expr;
-    }
-*/
     //                      HELPER
     //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -140,23 +131,6 @@ TODO I Will make a hole Condition Parser where this is then parsed
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-TODO I Will make a hole Condition Parser where this is then parsed
-
-    private Expr comparison() {
-        //comparison -> term (( ">" | ">=" | "<" | "<=" ) term )*
-
-        Expr expr = term(); //left expression
-
-        while (match(TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
-            Token operator = previous();    //operator ( ">", ">=", "<", "<=" )
-            Expr right = term();            //right expression
-            expr = new Expr.Binary(expr, operator, right); //override expr with new Binary expr
-        }
-        return expr;
-    }
-*/
-
     private Expr term() {
         //term -> factor ( ( "+" | "-" ) factor )*
 
@@ -182,7 +156,7 @@ TODO I Will make a hole Condition Parser where this is then parsed
     }
 
     private Expr unary() {
-        if (match(TokenType.MINUS, TokenType.ODD)) {
+        if (match(TokenType.MINUS)) {
             Token operator = previous();
             Expr right = unary();
             return new Expr.Unary(operator, right);
@@ -193,6 +167,9 @@ TODO I Will make a hole Condition Parser where this is then parsed
     private Expr primary() {
         if (match(TokenType.NUMBER)) {
             return new Expr.Literal(previous().literal);
+        }
+        if(match(TokenType.IDENTIFIER)) {
+            return new Expr.Variable(previous());
         }
         if (match(TokenType.LEFT_PAREN)) {
             Expr expr = expression();

@@ -15,7 +15,7 @@ public class Lexer {
     private int start = 0;                                          //points to the first character in the lexeme being scanned
     private int current = 0;                                        //points at the character currently being considered
     private int line = 1;                                           //tracks on what source line "current" is on
-    private boolean hadError = false;
+
 
     public Lexer(String source)                                     //Constuctor
     {
@@ -26,10 +26,6 @@ public class Lexer {
     public List<Token> lexSomeTokens() {
         while (!isAtEnd()) {
             start = current;
-            if(hadError) {
-                Compiler.error(line, "Encountered an error while lexing, stopping lexing process.");
-                break;
-            }
             lexAToken();
         }
         tokens.add(new Token(TokenType.EOF, "", null, line));
@@ -217,7 +213,6 @@ public class Lexer {
             while (isDigit(peek())) advance();
 
             Compiler.error(line, "Floating point numbers are not supported in PL/0.");
-            hadError = true;
             return;
         } else {
             addToken(TokenType.NUMBER, Integer.parseInt(source.substring(start, current)));
