@@ -182,38 +182,17 @@ public class Lexer {
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
 
-
-    //Functions to match numbers, Strings and identifiers
-/* Funny thing, PL/0 doesn't have strings... will be added later maybe O_O
-
-    private void String() {
-        while(peek() != '"' && !isAtEnd())
-        {
-            if(peek() == '\n') line++;
-            advance(); //returns the next character
-        }
-        if(isAtEnd())
-        {
-            Compiler.error(line, "Unterminated String");
-            return;
-        }
-        advance(); //the closing "
-
-        String value = source.substring(start+1, current-1); //everything between the quotes
-        addToken(TokenType.STRING,value);
-    }
-*/
-
-    //Handles numbers (only integers in PL/0)
+    //Handles numbers
     private void number() {
         while (isDigit(peek())) advance();
 
         if (peek() == '.' && isDigit(peekNext())) {
             advance(); // consume '.'
-            while (isDigit(peek())) advance();
+            while (isDigit(peek())) advance(); // we still consume the rest of the floating point number
 
-            Compiler.error(line, "Floating point numbers are not supported in PL/0.");
-            return;
+            Compiler.error(line, "Floating point number found: " + source.substring(start, current) + "\nPL/0 only supports integer numbers so " +
+        "this won't be added in the Token-List and will likely cause further errors.");
+
         } else {
             addToken(TokenType.NUMBER, Integer.parseInt(source.substring(start, current)));
         }

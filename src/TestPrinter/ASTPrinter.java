@@ -1,13 +1,14 @@
 package TestPrinter;
 
+import Types.Condition;
 import Types.Expr;
 
 
-public class ASTPrinter implements Expr.Visitor<String> {
+public class ASTPrinter implements Expr.Visitor<String>, Condition.Visitor<String> {
 
 
-    public String print(Expr expr) {
-        return expr.accept(this);
+    public String print(Condition condition) {
+        return condition.accept(this);
     }
 
 
@@ -52,5 +53,28 @@ public class ASTPrinter implements Expr.Visitor<String> {
         builder.append(")");
 
         return builder.toString();
+    }
+    private String parenthesize(String name, Condition... conditions) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("(").append(name);
+        for (Condition cond : conditions) {
+            builder.append(" ");
+            builder.append(cond.accept(this));
+        }
+        builder.append(")");
+
+        return builder.toString();
+    }
+
+    @Override
+    public String visitUnaryConditionCondition(Condition.UnaryCondition condition) {
+        return parenthesize(condition.operator.lexeme, condition.expression);
+    }
+
+
+    @Override
+    public String visitBinaryConditionCondition(Condition.BinaryCondition condition) {
+        return parenthesize(condition.operator.lexeme, condition.left, condition.right);
     }
 }

@@ -3,6 +3,7 @@ package Compiler;
 import Lexer.*;
 import Parser.Parser;
 import TestPrinter.ASTPrinter;
+import Types.Condition;
 import Types.Expr;
 //import Parser.*;
 
@@ -64,12 +65,12 @@ public class Compiler {
         List<Token> tokens = lexer.lexSomeTokens();
 
         Parser parser = new Parser(tokens);
-        Expr expression = parser.parse();
+        Condition condition = parser.parse();
 
         if(hadError) return;
 
 
-        System.out.println(new ASTPrinter().print(expression));
+        System.out.println(new ASTPrinter().print(condition));
 
     }
 

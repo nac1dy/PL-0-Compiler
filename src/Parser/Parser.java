@@ -34,11 +34,31 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    public Expr parse() {
+    public Condition parse() {
         try {
-            return expression();
+            return condition();
         } catch (ParseError error) {
             return null;
+        }
+    }
+    public Condition condition() {
+        //condition -> expression ( "=" | "#" | "<" | "<=" | ">" | ">=" ) expression | odd expression ;
+
+        if (match(TokenType.ODD)) {
+            Expr expr = expression();
+            return new Condition.UnaryCondition(previous(), expr);
+        } else {
+            Expr left = expression();
+
+            Token operator = null;
+            if (match(TokenType.EQUAL, TokenType.NOT_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL, TokenType.GREATER, TokenType.GREATER_EQUAL)) {
+                operator = previous();
+            } else {
+                throw error(peek(), "Expect comparison operator after left expression in condition.");
+            }
+
+            Expr right = expression();
+            return new Condition.BinaryCondition(left, operator, right);
         }
     }
 
