@@ -1,3 +1,4 @@
+/*
 package TestPrinter;
 
 import Types.Condition;
@@ -54,7 +55,9 @@ public class ASTPrinter implements Expr.Visitor<String>, Condition.Visitor<Strin
 
         return builder.toString();
     }
-    private String parenthesize(String name, Condition... conditions) {
+
+
+    private String parenthesize(String name, Expr expr) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("(").append(name);

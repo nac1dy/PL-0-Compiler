@@ -2,7 +2,7 @@ package Compiler;
 
 import Lexer.*;
 import Parser.Parser;
-import TestPrinter.ASTPrinter;
+//import TestPrinter.ASTPrinter;
 import Types.Condition;
 import Types.Expr;
 //import Parser.*;
@@ -10,6 +10,8 @@ import Types.Expr;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -18,10 +20,12 @@ import java.util.List;
 public class Compiler {
     private static final CodeGenerator generator = new CodeGenerator();
     static boolean hadError = false;
+    static String File = "";
 
 
     public static void main(String[] args) throws IOException   //just basic mainclass
     {
+
         //If too many arguments were passed, we print the usage
         if (args.length > 1) {
             System.out.println("Usage: pl0 [script]");
@@ -29,6 +33,7 @@ public class Compiler {
         }
         //If file was passed we start the runFile function
         else if (args.length == 1) {
+            File = args[0];
             runFile(args[0]);
         }
         else{
@@ -36,6 +41,9 @@ public class Compiler {
         }
         //in the future we could make a runprompt function here so that if no file is passed, we can run an interactive prompt
         //for that we would need to reset the hadError variable after each line
+    }
+    public static String getFile() {
+        return File;
     }
 
     //If file was passed, we call this function
@@ -70,7 +78,7 @@ public class Compiler {
         if(hadError) return;
 
 
-        System.out.println(new ASTPrinter().print(condition));
+        //System.out.println(new ASTPrinter().print(condition));
 
     }
 
