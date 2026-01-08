@@ -1,0 +1,11 @@
+var x;
+procedure p;
+begin
+  x := x + 1;
+  ! x
+end;
+begin
+  x := 0;
+  call p
+end.
+

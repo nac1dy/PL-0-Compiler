@@ -60,6 +60,14 @@ public class GenerateAst
         ));
         //TODO
         defineAst(outputDir, "Stmt", Arrays.asList(
+                "OutputStmt      : Expr expression",
+                "IfStmt         : Condition condition, Stmt thenBranch",
+                "WhileStmt      : Condition condition, Stmt body",
+                "RepeatUntilStmt  : Stmt body, Condition condition",
+                "InputStmt      : Token name",
+                "AssignStmt     : Token name, Expr value",
+                "CallStmt       : Token name",
+                "BeginEndStmt   : List<Stmt> statements"
 
 
         ));

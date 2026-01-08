@@ -17,7 +17,7 @@ public class Lexer {
     private int line = 1;                                           //tracks on what source line "current" is on
 
 
-    public Lexer(String source)                                     //Constuctor
+    public Lexer(String source)
     {
         this.source = source;
     }
@@ -186,17 +186,9 @@ public class Lexer {
     private void number() {
         while (isDigit(peek())) advance();
 
-        if (peek() == '.' && isDigit(peekNext())) {
-            advance(); // consume '.'
-            while (isDigit(peek())) advance(); // we still consume the rest of the floating point number
+        addToken(TokenType.NUMBER, Integer.parseInt(source.substring(start, current)));
 
-            Compiler.error(line, "Floating point number found: " + source.substring(start, current) + "\nPL/0 only supports integer numbers so " +
-        "this won't be added in the Token-List and will likely cause further errors.");
-
-        } else {
-            addToken(TokenType.NUMBER, Integer.parseInt(source.substring(start, current)));
-        }
-        //because PL/0 only has integer numbers we handle floating point numbers as an error
+        //error handling in parser
     }
 
     /*

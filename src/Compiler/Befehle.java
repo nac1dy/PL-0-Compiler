@@ -5,69 +5,70 @@ public enum Befehle
     // Ein Argument sind die zwei Bytes, die auf den Opcode im Bytecode folgen.
 
     // Argumente: Adresse
-    PushValueLocalVar,          //00
+    PushValueLocalVar((byte) 0x00),
     // Argumente: Adresse
-    PushValueMainVar,           //01
+    PushValueMainVar((byte) 0x01),
     // Argumente: Adresse, Prozeduren-ID
-    PushValueGlobalVar,         //02
+    PushValueGlobalVar((byte) 0x02),
     // Argumente: Adresse
-    PushAddressLocalVar,        //03
+    PushAddressLocalVar((byte) 0x03),
     // Argumente: Adresse
-    PushAddressMainVar,         //04
+    PushAddressMainVar((byte) 0x04),
     // Argumente: Adresse, Prozeduren-ID
-    PushAddressGlobalVar,       //05
+    PushAddressGlobalVar((byte) 0x05),
     // Argumente: Konstanten-ID
-    PushConstant,               //06
+    PushConstant((byte) 0x06),
 
     // auf Stack: oben = Wert, darunter = Zieladresse
-    StoreValue,                 //07
+    StoreValue((byte) 0x07),
     // auf Stack: oben = Wert
-    OutputValue,                //08
+    OutputValue((byte) 0x08),
     // auf Stack: oben = Zieladresse
-    InputToAddr,                //09
+    InputToAddr((byte) 0x09),
 
     // Operatoren mit 1 Faktor
     // auf Stack: oben = Wert → Ergebnis auf Stack: -Wert
-    Minusify,                   //0A
+    Minusify((byte) 0xA),
     // auf Stack: oben = Wert → Ergebnis auf Stack: true (1) / false (0)
-    IsOdd,                      //0B
+    IsOdd((byte) 0xB),
 
     // Operatoren mit 2 Faktoren
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 + Wert 2
-    OpAdd,                      //0C
+    OpAdd((byte) 0xC),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 - Wert 2
-    OpSubtract,                 //0D
+    OpSubtract((byte) 0xD),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 * Wert 2
-    OpMultiply,                 //0E
+    OpMultiply((byte) 0xE),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 / Wert 2
-    OpDivide,                   //0F
+    OpDivide((byte) 0xF),
 
     // Boolean-Logik
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 == Wert 2
-    CompareEq,                  //010
+    CompareEq((byte) 0x10),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 != Wert 2
-    CompareNotEq,               //011
+    CompareNotEq((byte) 0x11),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 < Wert 2
-    CompareLT,                  //012
+    CompareLT((byte) 0x12),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 > Wert 2
-    CompareGT,                  //013
+    CompareGT((byte) 0x13),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 ≤ Wert 2
-    CompareLTEq,                //014
+    CompareLTEq((byte) 0x14),
     // auf Stack: oben = Wert 2, darunter = Wert 1 → Ergebnis auf Stack: Wert 1 ≥ Wert 2
-    CompareGTEq,                //0x15
+    CompareGTEq((byte) 0x15),
 
     // Flow-Logik
     // Argumente: Prozedur-ID
-    CallProc,                   //016
+    CallProc((byte) 0x16),
     // keine Argumente
-    ReturnProc,                 //017
+    ReturnProc((byte) 0x17),
     // Argumente: Jump-Offset (auch negativ möglich)
-    Jump,                       //018
+    Jump((byte) 0x18),
     // Argumente: Jump-Offset, auf Stack: oben = Wert, der false (0) sein kann
-    JumpIfFalse,                //019
+    JumpIfFalse((byte) 0x19),
     // Argumente: Länge der Prozedur in Bytes, Prozedur-ID, Bytes auf Stack benötigt für Variablen
-    EntryProc,                  //01A
+    EntryProc((byte) 0x1A),
 
+    /*
     // erweiterte Codes
     // Argument: Null-terminierter String
     PutString,                  //01B
@@ -75,9 +76,31 @@ public enum Befehle
     Pop,                        //01C
     // auf Stack: oben = Adresse, die durch Daten an dieser ausgetauscht werden soll
     Swap,                       //01D
+    */
 
     // nur für VM
-    EndOfCode,                  //01E,
+    EndOfCode((byte) 0x1E);
+
+    private final byte code;
+
+    Befehle(byte code)
+    {
+        this.code = code;
+    }
+
+    public String toHexCode()
+    {
+        return String.format("%02X", code & 0xFF);
+    }
+
+
+
 
 }
 
+/*
+Jeder Befehl bekommt einen Byte-Wert zugewiesen, der im Bytecode steht.
+Dieser Byte-Wert kann über das Attribut "code" abgerufen werden.
+
+
+ */

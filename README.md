@@ -24,10 +24,10 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 # Aktuelle Probleme:
 
 - Der Parser ist noch nicht vollständig implementiert, es fehlen noch die Regeln für Statements.
-- Die Code Generation ist noch nicht implementiert.
-    -Das Problem da liegt im allgemeinen Verständnis von der Code Generation für einen PL/0 Compiler.
-    -Das Layout ist bisschen weirde, muss sich nochmal angeschaut werden.
-    -Die anzuzeigenen Daten müssen noch irgendwo hergeholt werden. 
+- Die Code Generation ist noch nicht implementiert. 
+    - Das Problem da liegt im allgemeinen Verständnis von der Code Generation für einen PL/0 Compiler.
+    - Das Layout ist bisschen weirde, muss sich nochmal angeschaut werden.
+    - Die anzuzeigenen Daten müssen noch irgendwo hergeholt werden. 
 -Fehler Handling fehlt
 
 
