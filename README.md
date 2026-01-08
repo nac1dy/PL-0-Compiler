@@ -25,20 +25,20 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 
 # Aktuelle Probleme:
 
-- Der Parser ist noch nicht vollständig implementiert, es fehlen noch die Regeln für Statements.
+- Symboltabelle muss noch implementiert werden
 - Die Code Generation ist noch nicht implementiert. 
     - Das Problem da liegt im allgemeinen Verständnis von der Code Generation für einen PL/0 Compiler.
     - Das Layout ist bisschen weirde, muss sich nochmal angeschaut werden.
     - Die anzuzeigenen Daten müssen noch irgendwo hergeholt werden. 
--Fehler Handling fehlt
+- Fehler Handling fehlt
 
 
 # Plan für nächstes mal:
 
-Jetzt wo Lexer und Parser einen stand erreicht haben womit man schonmal arbeiten "könnte", ist es gut sich einen Überblick zu verschaffen, was in der Code Generation gemacht werden muss.
+Mit dem Thema Symboltabelle auseinander setzten und diese implementieren
 
-Das heißt welche Informationen zu den Befehlen brauch ich?
-Was ist das Layout, bzw wie baue ich das Layout?
-Welche Daten müssen angezeigt werden?
+Scopes schonmal anschauen 
 
-Das führt am ende wahrscheinlich dazu das im Parser nochmal dinge geändert werden, das heißt hinzugefügt oder entfernt.
+so langsam an das code generieren rantasten
+
+ERROR MESSAGES **SCHÖNER** MACHEN
