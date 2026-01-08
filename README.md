@@ -5,12 +5,14 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 # Fertig:
 
 - Lexer
-- Parser für Expressions und Conditions
+- Parser (WOHOOOO)
 
 # Muss noch gemacht werden:
 
-- Parser für Statements
+- Symboltabelle
+- Semantische Analyse
 - Code Generation
+- Bessere Error Messages
 
 # Was macht der Code aktuell (kurzer Programmablauf):
 
