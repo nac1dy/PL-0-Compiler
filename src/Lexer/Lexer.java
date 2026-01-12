@@ -201,7 +201,8 @@ public class Lexer {
         while (isAlphaNumeric(peek())) advance();
 
         String text = source.substring(start, current);
-        TokenType type = keywords.get(text); //returns null if no type is found to the corresponding text (keyword)
+        // match case-insensitiv
+        TokenType type = keywords.get(text.toLowerCase());
         if (type == null) type = TokenType.IDENTIFIER;
         addToken(type);
     }

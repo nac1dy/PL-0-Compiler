@@ -107,8 +107,6 @@ public class Parser {
         return new Block(constDecls, varDecls, procDecls, statement);
     }
 
-    //TODO: IMPLEMENTING SEMICOLON SYNTAX RULES FOR PL/0
-
     // ----------------- statements -----------------
 
 
@@ -241,14 +239,22 @@ public class Parser {
     private Expr expression() {
         // expression -> term ( ( "+" | "-" ) term )*
 
-        Expr expr = term(); //left expression
-
-        while (match(TokenType.PLUS, TokenType.MINUS)) {
-            Token operator = previous();    //operator ( "+", "-" )
-            Expr right = term();            //right expression
-            expr = new Expr.Binary(expr, operator, right); //override expr with new Binary expr
+        if(match(TokenType.MINUS))
+        {
+            Token operator = previous();
+            Expr right = term();
+            return new Expr.Unary(operator, right);
         }
-        return expr;
+        else {
+            Expr expr = term(); //left expression
+
+            while (match(TokenType.PLUS, TokenType.MINUS)) {
+                Token operator = previous();    //operator ( "+", "-" )
+                Expr right = term();            //right expression
+                expr = new Expr.Binary(expr, operator, right); //override expr with new Binary expr
+            }
+            return expr;
+        }
     }
 
     //                      HELPER

@@ -93,6 +93,11 @@ public enum Befehle
         return String.format("%02X", code & 0xFF);
     }
 
+    public byte getCode()
+    {
+        return code;
+    }
+
 
 
 

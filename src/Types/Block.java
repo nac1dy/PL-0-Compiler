@@ -1,5 +1,7 @@
 package Types;
 
+import Lexer.Token;
+
 import java.util.List;
 
 /**
@@ -17,10 +19,13 @@ public class Block {
     public Block(List<ConstDecl> constDecls,
                  List<VarDecl> varDecls,
                  List<ProcDecl> procDecls,
-                 Stmt statement) {
+                 Stmt statement)
+    {
         this.constDecls = constDecls;
         this.varDecls = varDecls;
         this.procDecls = procDecls;
         this.statement = statement;
     }
+
+
 }

@@ -6,39 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BinaryOperator;
 
-/*
-Grammar for PL/0
-
-                    FOR EXPRESSIONS
-
-Expression: literal | unary | binary | grouping;
-
-Literals -> Number;
-
-Grouping -> '(' Expression ')';
-
-Unary -> ( '-' ) Expression;
-
-Binary -> Expression ArithOperator Expression;
-
-ArithOperator -> '+' | '-' | '*' | '/';
-
-
-
-                    FOR CONDITIONS
-
-Condition: UnaryCondition | BinaryCondition;
-UnaryCondition -> 'odd' Expression;
-BinaryCondition -> Expression RelOperator Expression;
-RelOperator -> '=' | '#' | '<' | '<=' | '>' | '>=';
-
-
-
-                    FOR STATEMENTS
-
-
- */
-
 
 public class GenerateAst
 {
@@ -75,6 +42,8 @@ public class GenerateAst
                 "UnaryCondition : Token operator, Expr expression",
                 "BinaryCondition: Expr left, Token operator, Expr right"
         ));
+
+
     }
 
     private static void defineAst(String outputDir, String baseName, List<String> types) throws IOException

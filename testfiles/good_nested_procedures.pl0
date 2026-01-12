@@ -1,0 +1,26 @@
+var x;
+
+
+procedure p;
+  var y;
+
+
+  procedure q;
+  var c, x;
+  begin
+    x := x + 1;
+    y := y + 2;
+    ! x;
+    ! y
+  end;
+
+begin
+  x := 0;
+  y := 0;
+  call q
+end;
+
+begin
+  call p
+end.
+
