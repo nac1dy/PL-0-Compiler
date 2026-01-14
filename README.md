@@ -6,12 +6,14 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 
 - Lexer
 - Parser (WOHOOOO)
-
-# Muss noch gemacht werden:
-
 - Symboltabelle
 - Semantische Analyse
 - Code Generation
+- **LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO**
+# Muss noch gemacht werden:
+
+- Commenting
+- Cleanup
 - Bessere Error Messages
 
 # Was macht der Code aktuell (kurzer Programmablauf):
@@ -25,20 +27,9 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 
 # Aktuelle Probleme:
 
-- Symboltabelle muss noch implementiert werden
-- Die Code Generation ist noch nicht implementiert. 
-    - Das Problem da liegt im allgemeinen Verständnis von der Code Generation für einen PL/0 Compiler.
-    - Das Layout ist bisschen weirde, muss sich nochmal angeschaut werden.
-    - Die anzuzeigenen Daten müssen noch irgendwo hergeholt werden. 
 - Fehler Handling fehlt
 
 
 # Plan für nächstes mal:
-
-Mit dem Thema Symboltabelle auseinander setzten und diese implementieren
-
-Scopes schonmal anschauen 
-
-so langsam an das code generieren rantasten
 
 ERROR MESSAGES **SCHÖNER** MACHEN
