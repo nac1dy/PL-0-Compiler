@@ -69,3 +69,142 @@ Das ist nicht Symboltabelle, aber hängt eng mit Codegen zusammen.
    - betrete neuen Scope (Parent = alter Scope)
    - zähle/allokiere Variablen (Slots)
    - verlasse den Scope am Ende wieder
+
+
+# Rules für unsere Symboltabelle
+
+1. Jeder Block = neuer Scope
+2. Keine Duplicates
+3. Suche geht vom aktuellen scope bis ins globale scope
+4. Innere Scopes dürfen Namen von äußeren Variablen überdecken
+5. Assign/Input nur auf var
+6. Call nur für procedures
+
+Die symboltabelle muss mir sagen in welcher proc/in welchem Scope die variable definiert ist und welchen offset sie von dem Scope wo sie gerufen wird hat zu dem scop wo sie definiert wird
+adresse ist das einzige wichtige und die setzt sich aus procnum und offset in varliste(im eigenen Scope)
+
+Consts haben Liste(alle uniquen zahlen) und Hashmap(nur für selber definierte)
+
+
+---------------------------------------------
+
+# Welche Symbole
+
+- ConstSymbol(name, value, constIndex, level)
+- VarSymbol(name, slot, level, ownerProcNum)
+- ProcSymbol(name, procNum, level, localVarCount)
+
+
+# Welche "Fragen" muss ich stellen können
+
+- defineConst(name, value)
+- defineVar(name)
+- defineProc(name)
+- resolve(name) sucht im aktuellen scope, sonst parent weil shadowing ok ist
+
+-> Generator soll später nichtmehr suchen sondern direkt info zu Symbol bekommen
+
+# Scope
+
+Jeder Block neuer Scope -> neue Procedure erzeugt neuen Scope in für ihren Block und wird Owner der Procedure
+
+Level beschreibt dabei die Tiefe des Scopes (global = 0, main = 1, local = 2)
+
+
+# Nummerierung
+
+mainproc hat procnum 0 (immer)
+jede danach definierte Procedure bekommt eindeutige Nummer >0
+
+Variablen haben pro procedure eine "Liste" in welcher der Index auschlaggebend ist an welcher stelle die Variable steht
+slot 0 = erste var, usw...
+localVarCounter ist dann der Zähler für alles Variablen
+
+
+# Constants
+
+Sollen in einer gemeinsamen Map gestored werden mit dem Value und dem Index als information. 
+Da Konstanten einfach am ende des bytecodes aufgezählt werden, ermöglicht es mir dann, 
+
+```pseudo
+pool[index] (in 4 bytes, little endian)
+```
+
+Map für definieren, also Map<Integer, Integer> valueToIndex
+
+und Liste für Bytecode, List<Integer> valuesByIndex
+
+```pseudo
+Start: nextIndex = 0, valueToIndex = {}, valuesByIndex = []
+7 neu → index 0
+valueToIndex[7]=0, valuesByIndex=[7]
+1 neu → index 1
+valueToIndex[1]=1, valuesByIndex=[7,1]
+7 schon da → index 0
+valuesByIndex bleibt [7,1]
+42 neu → index 2
+valuesByIndex=[7,1,42]
+```
+
+
+--------------------------------------
+
+# Wann neuer Scope
+
+Program hat einen Block der wiederum der Globale Scope ist.
+
+Jede neue Procedure hat dann einen eigenen Block => eigenen Scope
+=> **Ein Scope pro Bock**
+
+
+# Level
+
+Kann man sich wie eine Ordner Struktur vorstellen, main ist der root ordner mit level 0
+
+die Ordner im Root ordner haben dann jeweils eine eigene, eindeutige Zahl > 0.
+
+Level steigt also mit jeder Prozedur verschachtelung. 
+
+Wenn jedoch 3 prozeduren hinter einander stehen, also 
+
+```PL/0
+procedure a
+...
+begin
+end
+procedure b
+...
+begin
+end
+procedure c
+...
+begin
+end
+```
+
+dann haben alle grundsätzlich das level 1, da ich ja in procedure a nicht in procedure b schauen würde ob da irgendwas definiert ist
+ich gehe ja beim traversieren der scopes immer ein scope höher und das höhere scope ist der root ordner
+
+
+# Owner
+
+Jeder scope hat einen Owner (also jeder inhalt eines Ordners, hat einen Ort, in dem der Inhalt gelagert wird)
+
+Das ist vorallem wichtig wenn eine Variable definiert wird, dann muss verfügbar sein in welcher proc das passiert das die variablen mit dem scope der proc verbunden wird
+und der jeweilige varcounter hochgezählt wird
+
+
+# Parent
+
+Ist ähnlich wie der Owner, nur das man sich das vorstellen kann wie
+
+root ist parent von User ordner sozusagen, das heißt wenn man die kette hochläuft geht man von 
+
+... -> ... -> User -> root (beispielhaft)
+
+wobei die "..." die child scopes sind
+
+
+natürlich hat dementsprechen der root keinen Parent
+
+

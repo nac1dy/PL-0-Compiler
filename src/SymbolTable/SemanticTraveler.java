@@ -62,7 +62,7 @@ public class SemanticTraveler implements Expr.Visitor<Void>, Stmt.Visitor<Void>,
             String name = varDecl.name.lexeme;
             int level = s.getCurrentScope().getLevel();
             int slot = allocatVarSlot(currentProc);
-            s.define(new VarSymbol(name, level, slot));
+            s.define(new VarSymbol(name, level, slot, currentProc.getProcNum()));
         }
         // procDecl heads
         for(ProcDecl procDecl : block.procDecls)

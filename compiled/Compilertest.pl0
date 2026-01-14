@@ -1,0 +1,24 @@
+const c = 10;
+
+var x;
+
+procedure P;
+    var y;
+
+    procedure Q;
+    begin
+        ? y;
+        x := x + y;
+        !y;
+        !x
+    end;
+
+begin
+    y := 1;
+    call Q
+end;
+
+begin
+    x := c;
+    call P
+end.

@@ -12,7 +12,7 @@ procedure P;
 
         // do-while style loop: prints 7 forever if condition is always false; here it stops at t = 3
         repeat
-            t := t + 1
+            t := t + 1;
         until t = 3;
 
         // read a value into i (local to P) via main/global access from nested procedure

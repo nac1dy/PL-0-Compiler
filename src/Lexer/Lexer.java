@@ -89,7 +89,12 @@ public class Lexer {
                 addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
                 break;
             case '/':
-                addToken(TokenType.SLASH);
+                if(match('/'))
+                {
+                    while(peek() != '\n' && !isAtEnd()) advance();
+                }else {
+                    addToken(TokenType.SLASH);
+                }
                 break;
 
             //skip over meaningless characters
@@ -106,6 +111,7 @@ public class Lexer {
 
                 Compiler.error(line, "Strings are not supported in PL/0.");
                 break;
+
             //------------------------------
             default:
                 if (isDigit(c)) {
