@@ -30,6 +30,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting Output Statement");
             return visitor.visitOutputStmtStmt(this);
         }
 
@@ -44,6 +45,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting IfStmt Statement");
             return visitor.visitIfStmtStmt(this);
         }
 
@@ -59,6 +61,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting While Statement");
             return visitor.visitWhileStmtStmt(this);
         }
 
@@ -74,6 +77,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting RepeatUntil Statement");
             return visitor.visitRepeatUntilStmtStmt(this);
         }
 
@@ -88,6 +92,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting Input Statement");
             return visitor.visitInputStmtStmt(this);
         }
 
@@ -102,6 +107,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting Assign Statement");
             return visitor.visitAssignStmtStmt(this);
         }
 
@@ -116,6 +122,7 @@ public abstract class Stmt {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting Call Statement");
             return visitor.visitCallStmtStmt(this);
         }
 
@@ -124,6 +131,7 @@ public abstract class Stmt {
 
     public static class BeginEndStmt extends Stmt {
         public BeginEndStmt(List<Stmt> statements) {
+            System.out.println("Visiting BeginEnd Statement");
             this.statements = statements;
         }
 

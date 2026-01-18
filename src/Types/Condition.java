@@ -17,6 +17,8 @@ public abstract class Condition {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+
+            System.out.println("Visiting Unary Condition");
             return visitor.visitUnaryConditionCondition(this);
         }
 
@@ -33,6 +35,7 @@ public abstract class Condition {
 
         @Override
         public <R> R accept(Visitor<R> visitor) {
+            System.out.println("Visiting Binary Condition");
             return visitor.visitBinaryConditionCondition(this);
         }
 
