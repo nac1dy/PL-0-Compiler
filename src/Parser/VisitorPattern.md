@@ -1,3 +1,9 @@
+-------------------- 
+
+#### Dieses File soll die Kommentare ein wenig ersetzten im Parser!
+
+--------------------
+
 # VisitorPattern 
 
 Das Problem was versucht wird zu lösen ist folgendes:

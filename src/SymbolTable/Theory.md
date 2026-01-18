@@ -1,3 +1,45 @@
+-------------------- 
+
+#### Dieses File soll die Kommentare ein wenig ersetzten in der Symboltabelle/SemanticTraveler!
+
+--------------------
+
+Ich würde gerne etwas näher auf die Funktionsweise des SemanticTravelers eingehen da dies der wichtigste Part ist.
+Der Rest sind Klassen die wichtige Objekte verkörpern.
+
+Der SemanticTraveler ist die Implementation der visit... Methoden, das heißt, wenn wir den Baum ablaufen, "besuchen" wir verschiedene Nodes
+je nach dem auf welcher wir sind, rufen wir die visit Methoden auf.
+
+Jedoch fällt etwas auf.
+
+Es gibt die visitBinaryExpr implementation:
+
+````Java
+@Override
+public Void visitBinaryExpr(Expr.Binary expr) {
+   expr.left.accept(this);
+   expr.right.accept(this);
+   return null;
+}
+````
+Und was genau macht das jetzt, die Expr, die die visit Methode ruft, ruft von die Linke Expression die accept und von der Rechten Expression die accept Methode auf
+Je nach dem was das für eine Expression ist, wird dann wieder die accept methode der Expression gerufen, und das hangelt sich immer weiter bis es zu Literal oder Grouping Expression kommt.
+
+Das ist bisschen Kompliziert zu erklären aber die Idee ist, da der Semantic Traveler nicht von jeder visit Methode etwas braucht
+reduziert man sich auf die Methoden die wichtig sind, und der rest ruft einfach die accept Methoden auf, dadurch endet man irgendwann an einem Punkt wo der Value der Expression in einer Liste gespeichert wird.
+
+Bei Expressions ist das literalExpression für Konstanten und variableExpr für Variablen. 
+
+Also... Fazit: Die Idee in dieser Implementation des Visitor Patterns ist das es "Rekursiv" die accept Methoden ruft bis es auf die "Relevanten" Visit Methoden trifft die dann wiederum die Informationen
+für die Symboltabelle enthalten. Dafür wurde jetzt auch ein Output eingebaut der zeigt in welcher Reihenfolge die Visit Methoden gerufen werden.
+
+
+Ich glaube das waren so die unverständlichsten Punkte in diesem Programm und ich hoffe ich konnte sie hiermit erklären.
+
+
+Alles was hier jetzt folgt sind "Notes" die ich während des Programmierens mitgeschrieben habe.
+
+-------------------------------
 # Was macht eine Symboltabelle in einem Compiler?
 
 Sagen wir du bist der Compiler und schaust in den AST und siehst dort ein `x`. Die Symboltabelle sagt dir:
@@ -7,9 +49,6 @@ Sagen wir du bist der Compiler und schaust in den AST und siehst dort ein `x`. D
 
 Für die Codegenerierung ist das wichtig, weil Befehle wie `pushAdrVarLocal` / `pusValVarLocal` (bzw. deine Wrapper-Namen) Operanden erwarten,
 und diese Operanden kommen aus der Symboltabelle.
-
-Ergänzung: Eine Symboltabelle ist typischerweise **kein** Laufzeit-Speicher wie beim Interpreter.
-Sie enthält Metadaten, damit der Compiler Bytecode erzeugen kann.
 
 # PL/0 spezifisch
 
@@ -26,20 +65,9 @@ Was ist speziell wichtig pro Symbol?
 - für CONST: Wert (oder ein ConstPool-Index, falls du Konstanten am Ende sammelst)
 - für PROC: ProcId (+ später Code-Startadresse/Size)
 
-Korrektur: Eine Variable braucht in der Symboltabelle normalerweise **keinen Wert**.
-Der Wert existiert erst zur Laufzeit in der VM (Stack/Activation Record). Der Compiler muss nur wissen, **wo** er liegt.
-
-Ergänzung: Oft ist es praktisch, zwischen
-- `slot` (0,1,2,...) und
-- `byteOffset` (= slot * 4, wenn ein int 4 Byte ist)
-zu unterscheiden. Welche Form du speicherst, hängt davon ab, was die VM-Befehle als Operand wollen.
 
 PL/0 erlaubt Variablen in Prozeduren und wiederum Prozeduren **in** Prozeduren.
 Das führt dazu, dass du verschachtelte Scopes brauchst (Scope-Kette / Stack von Scopes).
-
-Korrektur: "Local / Global / Main" ist eher ein VM-Blick.
-Sprachlich hast du eine **Scope-Kette** (aktueller Scope + Parent + Parent ...).
-Ob ein Zugriff am Ende als `Local`/`Main`/`Global` kodiert wird, entscheidest du beim Codegen anhand des gefundenen Symbols.
 
 # Speziell in dieser Implementierung
 
@@ -49,22 +77,18 @@ Ob ein Zugriff am Ende als `Local`/`Main`/`Global` kodiert wird, entscheidest du
       - vergibt Var-Slots
       - vergibt ProcIds
       - speichert Const-Werte
-      - prüft einfache Fehler: „doppelt deklariert“, „benutzt aber nicht deklariert“
+      - prüft einfache Fehler: „doppelt deklariert“, „benutzt aber nicht deklariert“ 
 
-2. Pass 2 (Codegenerierung):
-   - nutzt die Symboltabelle, um Operanden für Variablen-/Prozedur-/Konstantenbefehle zu erzeugen
-   - besonders wichtig für Prozeduren, Variablenzugriffe und Kontrollstrukturen
+   2) Pass 2 (Codegenerierung):
+      - nutzt die Symboltabelle, um Operanden für Variablen-/Prozedur-/Konstantenbefehle zu erzeugen
+      - besonders wichtig für Prozeduren, Variablenzugriffe und Kontrollstrukturen
 
-Ergänzung: Kontrollstrukturen (if/while/repeat) brauchen zusätzlich meist **Backpatching**:
-Du emittest erst einen Jump mit Platzhalter-Offset und trägst den echten Relativ-Offset später ein.
-Das ist nicht Symboltabelle, aber hängt eng mit Codegen zusammen.
-
-3. Dafür sind sinnvoll:
+2. Dafür sind sinnvoll:
    - `Symbol` (Daten über CONST/VAR/PROC)
    - `Scope` (Map Name -> Symbol + Parent)
    - optional `ProcedureInfo` (z.B. procId, level, varCount, später codeStart/codeLen)
 
-4. Wenn du Prozeduren verarbeitest:
+3. Wenn du Prozeduren verarbeitest:
    - lege ein ProcSymbol im aktuellen Scope an
    - betrete neuen Scope (Parent = alter Scope)
    - zähle/allokiere Variablen (Slots)
@@ -206,5 +230,3 @@ wobei die "..." die child scopes sind
 
 
 natürlich hat dementsprechen der root keinen Parent
-
-

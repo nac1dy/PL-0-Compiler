@@ -1,7 +1,6 @@
 package SymbolTable;
 
 import Types.*;
-
 import java.util.*;
 
 public class SemanticTraveler implements Expr.Visitor<Void>, Stmt.Visitor<Void>, Condition.Visitor<Void> {

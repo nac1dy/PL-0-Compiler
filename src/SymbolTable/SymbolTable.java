@@ -35,6 +35,7 @@ public class SymbolTable
 
     public Symbol resolve(String name)
     {
+        // if no scope defined, return null
         if(currentScope == null)
         {
             return null;

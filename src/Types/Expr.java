@@ -25,9 +25,9 @@ public abstract class Expr
     }
 
     @Override
-    public <R> R accept(Visitor<R> visitor)
-{
-    return visitor.visitBinaryExpr(this);
+    public <R> R accept(Visitor<R> visitor) {
+        System.out.println("Visiting Binary Expression");
+        return visitor.visitBinaryExpr(this);
     }
 
     public final Expr left;
@@ -44,6 +44,7 @@ public abstract class Expr
     @Override
     public <R> R accept(Visitor<R> visitor)
 {
+    System.out.println("Visiting Grouping Expression");
     return visitor.visitGroupingExpr(this);
     }
 
@@ -75,6 +76,7 @@ public abstract class Expr
     @Override
     public <R> R accept(Visitor<R> visitor)
 {
+    System.out.println("Visiting Grouping Expression");
     return visitor.visitUnaryExpr(this);
     }
 
@@ -91,6 +93,7 @@ public abstract class Expr
     @Override
     public <R> R accept(Visitor<R> visitor)
 {
+    System.out.println("Visiting Grouping Expression");
     return visitor.visitVariableExpr(this);
     }
 

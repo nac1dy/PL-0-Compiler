@@ -107,7 +107,7 @@ Dafür wurden dementsprechend wieder Klassen implementiert
 
 Und in Block werden all diese in der jeweiligen Liste gespeichert.
 
-Je nach dem welchen Token man matched:
+Je nach dem welchen Token gematched wird:
 ````Java
     private Block block() {
 
@@ -159,5 +159,36 @@ Je nach dem welchen Token man matched:
     return new Block(constDecls, varDecls, procDecls, statement);
 }
 ````
+Wir speichern also alle declarationen in der entsprechenden Liste und rufen zu, schluss die statement Funktion auf.
+Dann returnen wir den Block den wir gerade geparsed haben.
 
-Das ist der Zweite Schritt im Parser
+
+Jetzt können wir weiter machen mit der richtigen verarbeitung von Statements.
+
+
+Die statement() methode durchläuft die Token Liste und schaut in einem großen If-Statement auf welchem Statement man gerade ist.
+Und je nach dem wird dann eine neue Node erstellt.
+
+Und das tolle daran ist, das kann man genauso für Conditions und Expression bauen, das heißt, die Funktionen 
+condition() und expression() funktionieren genauso, nur das expression und condition nochmal unterteilt sind in 
+Binary, Unary usw. Bei Statements ist so eine unterteilung ein wenig, "unnötig". 
+
+Interessant ist aber dennoch das man das bei Expressions und Conditions so macht weil die Grammatik so aufgebaut ist.
+Wenn man sich die Grammatik von PL/0 anschaut, wird condition weniger aber expression sehr zerlegt in 
+expression - term - factor. 
+Das wird gemacht um linksrekursion zu vermeiden und mehrdeutigkeit zu verhindern.
+
+So, das war die Theorie, es gibt in dieser Implementation natürlich wieder viele kleine Helper welche aber relativ selbsterklärend sind.
+
+Das letzte interessante wird die synchronize() Methode sein. Sie ist dazu da, den Parser bei einem Error zu helfen wieder auf die richtige
+Spur zu kommen. Es werden einfach Statements ignoriert bis ein Statement Ende, ";", kommt.
+
+Die Idee ist das verhindern von "Cascade Errors", wenn wir ein Syntax Error beim Parsen finden, wird dementsprechend alles folgende auch ein Error sein, 
+also verwerfen wir diese "Fehlerhaften" Statements um wieder in Sync zu kommen mit den "Richtigen". 
+
+Und that's it eigentlich.
+
+
+Wir haben also aus einer Liste an Tokens die der Lexer vorbereitet hat, einen Baum generiert mit verschiedenen Nodes und Blättern und diesen werden wir jetzt mit einem Inspector durchsuchen und die wichtigen Informationen speichern.
+
+

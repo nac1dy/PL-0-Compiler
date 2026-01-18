@@ -1,3 +1,9 @@
+-------------------- 
+
+#### Dieses File soll die Kommentare ein wenig ersetzten im Codegenerator!
+
+--------------------
+
 # Layout
 
 Opcodes = 1 Byte
@@ -40,6 +46,15 @@ Diese werden relativ simpel durch die methode write header geschrieben und die A
 
 Dann werden alle Procedure Declarations aus der Liste geholt, diese werden dann absteigend sortiert um von innen nach außen die Procedures auszuwerten
 
+### Warum eigentlich von Innen nach Außen?
+
+------
+Weil Informationen der Inneren Procedure den äußeren Bekannt sein muss, wenn man aufsteigend Sortieren und somit von außen nach innen Arbeitet (Hier geht es nur um die Codegen, nich das ausführen)
+dann würde die Main die Informationen der Inneren Proc nicht kennen wenn sie diese Aufrufen wöllte. Das heißt bevor die Main, eine Funktion aufrufen kann, muss sie bereits bekannt sein.
+
+Ausgeführt wird am ende von Außen nach Innen natürlich, aber das geht nur wenn die Äußersten Schichten Informationen über die Innersten haben
+
+--------
 und für jede Procedure Declaration wird dann eine neue Procedure declariert und einmal durchgelaufen und je nach dem was man matched, 
 also Statement, Expression oder Condition, wird dann die dementsprechende Methode dafür gerufen
 
@@ -115,3 +130,21 @@ base = jumpPos + 3
 target = loopStart
 offsetBack = target - base (negativ)
 ```
+
+
+------------
+
+Ich meinte zwar das die Code Gen "einfach" zu verstehen ist, dennoch würde ich gerne 1-2 Worte dazu verlieren. 
+1. Mein Kumpel hatte mich noch darauf hingewiesen das es durchaus möglich ist die Code Gen, wenn man schon ein funktionierendes Visitor Pattern hat, auch durch das Visitor Pattern realisierbar ist.
+2. Die Codegen basiert darauf das man wieder die jeweiligen Statements, Conditions und Expressions Matched und je dementsprechend den Code generiert. Dabei kann man sich entweder selber OpCode bauen oder wie in diesem Beispiel 
+   einer vorgefertigten VM folgen welche spezifischen OpCode fordert. Das war es dann aber tatsächlich wirklich, bis auf die Jumps generiert man den Code mit den nötigen Informationen und die VM 
+   sucht sich dann die Informationen aus dem Stack.
+
+
+Es ist auf jeden fall zu empfehlen helper generate Methoden zu haben welche den Code in ein ByteArray schreiben oder in eine Byte Liste (nicht das toByteArray() vergessen!)
+Außerdem ist in dieser Implementation für manche Statements zusatz Information nötig wie die Adresse im ByteArray welches man aber gut mitgeben kann in dem man den "Slot" der Liste in der man die Variable speichert mitgibt
+Der Generator hat ja alle Informationen durch den SemanticTraveler, das heißt die VM hat diese Informationen auch, wir müssen sie ihr nur geben und das machen wir "so".
+
+Naja, ich glaube das war es am ende, ein wenig darauf achten in welcher reihenfolge man den Code generiert und wann etwas "lokal", "global" oder "main" ist (auf Variablen bezogen) und die Jumps verstehen und dann kann man seien eigenen kleinen Code generator bauen.
+
+

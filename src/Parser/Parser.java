@@ -97,8 +97,7 @@ public class Parser {
                 consume(TokenType.SEMICOLON, "Expect ';' after procedure block.");
                 procDecls.add(new ProcDecl(name, body));
             }
-        }catch(ParseError e)
-        {
+        } catch (ParseError e) {
             synchronize();
         }
 
@@ -116,6 +115,7 @@ public class Parser {
      * and return the corresponding Stmt object which then is a node in the AST tree which we can later traverse
      *
      */
+
     private Stmt statement() {
         // assignment
         try {
@@ -206,12 +206,11 @@ public class Parser {
             return new Stmt.BeginEndStmt(new ArrayList<>());
         }
     }
-
     // ----------------- condition -----------------
 
     /*
-     * Conditions just like before, we have unary and binary (exactly like expressions) and either we match odd and we know its unary
-     * or we know, it's a binary and we get the left expression, operator and right expression
+     * Conditions: we have unary and binary (exactly like expressions) and either we match odd and we know its unary
+     * or we know, it's a binary, and we get the left expression, operator and right expression
      */
     public Condition condition() {
         if (match(TokenType.ODD)) {
@@ -238,13 +237,11 @@ public class Parser {
     private Expr expression() {
         // expression -> term ( ( "+" | "-" ) term )*
 
-        if(match(TokenType.MINUS))
-        {
+        if (match(TokenType.MINUS)) {
             Token operator = previous();
             Expr right = term();
             return new Expr.Unary(operator, right);
-        }
-        else {
+        } else {
             Expr expr = term(); //left expression
 
             while (match(TokenType.PLUS, TokenType.MINUS)) {
@@ -282,7 +279,7 @@ public class Parser {
     private Token advance() {
         if (!isAtEnd()) current++;
         Token prev = previous();
-        // errorLine auf zuletzt konsumiertes Token setzen
+        // errorLine set to last consumed Token's line
         this.errorLine = prev.line;
         return prev;
     }
@@ -310,7 +307,7 @@ public class Parser {
     }
 
     private ParseError error(Token token, String message) {
-        // Falls der Token keine sinnvolle Line liefert (z.B. EOF), nutze errorLine als Fallback.
+        // Determine the line number for the error message
         int line = (token != null) ? token.line : this.errorLine;
 
         if (token == null) {
@@ -325,7 +322,8 @@ public class Parser {
 
 
     /*
-     * here i'm still not sure if we need that in the future but for now i will keep it
+     * Error recovery: synchronize the parser by discarding tokens until
+     * we reach a statement boundary.
      */
     private void synchronize() {
 
