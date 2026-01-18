@@ -1,0 +1,14 @@
+var x;
+
+procedure test;
+var x;
+begin
+  x := 5;
+  write(x);
+end;
+
+begin
+  x := 1;
+  call test;
+  write(x);
+end.

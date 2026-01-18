@@ -13,7 +13,6 @@ import java.util.List;
 
 public class Compiler {
     static boolean hadError = false;
-    static boolean hadRuntimeError = false;
     static String File = "";
 
 
@@ -43,7 +42,6 @@ public class Compiler {
         byte[] filedata = Files.readAllBytes(Paths.get(Path));
         run(new String(filedata));
         if (hadError) System.exit(65); // if there was an error, exit with code 65
-        if (hadRuntimeError) System.exit(70);
     }
 
     private static void runPrompt() throws IOException {
@@ -140,12 +138,6 @@ public class Compiler {
         } else {
             report(token.line, " at '" + token.lexeme + "'", message);
         }
-    }
-
-    static void runtimeError(RuntimeError error)
-    {
-        System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
-        hadRuntimeError = true;
     }
 
 }

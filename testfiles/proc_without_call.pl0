@@ -1,0 +1,8 @@
+procedure p;
+begin
+  write(1);
+end;
+
+begin
+  p;
+end.

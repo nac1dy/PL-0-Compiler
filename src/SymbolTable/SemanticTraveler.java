@@ -72,6 +72,7 @@ public class SemanticTraveler implements Expr.Visitor<Void>, Stmt.Visitor<Void>,
             procnum++;
             s.define(procSym);
             procDeclToSymbol.put(procDecl, procSym);
+
         }
         // procDecl bodies
         for(ProcDecl procDecl : block.procDecls)
@@ -82,6 +83,8 @@ public class SemanticTraveler implements Expr.Visitor<Void>, Stmt.Visitor<Void>,
 
         // statement
         block.statement.accept(this);
+        //recursion
+
     }
 
     private int getOrCreateConstIndex(int value)

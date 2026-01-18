@@ -1,6 +1,6 @@
 package Parser;
 
-import Compiler.Compiler;
+import Compiler.*;
 import Lexer.Token;
 import Lexer.TokenType;
 import Types.*;
@@ -121,7 +121,7 @@ public class Parser {
         try {
             if (check(TokenType.IDENTIFIER)) {
                 Token name = advance();
-                consume(TokenType.ASSIGN, "Expect ':=' after identifier.");
+                consume(TokenType.ASSIGN, "Expect ':=' after identifier and 'call' before Identifier for Procedure Calls");
                 Expr value = expression();
                 return new Stmt.AssignStmt(name, value);
             }

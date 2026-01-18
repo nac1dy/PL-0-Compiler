@@ -1,0 +1,36 @@
+const max = 5;
+var x, sum;
+
+procedure increment;
+begin
+  x := x + 1
+end;
+
+procedure inputAndSum;
+var i;
+begin
+  i := 0;
+  sum := 0;
+
+  repeat
+    read(x);
+    sum := sum + x;
+    i := i + 1;
+  until i = max
+end;
+
+begin
+  x := 0;
+  sum := 0;
+
+  call inputAndSum;
+
+  if sum > 10 then
+    !sum;
+
+  while x < 3 do
+  begin
+    call increment;
+    !x
+  end
+end.

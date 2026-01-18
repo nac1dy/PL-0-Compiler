@@ -1,25 +1,20 @@
-const c = 10;
+var n, result;
 
-var x;
-
-procedure P;
-    var y;
-
-    procedure Q;
-    begin
-        ? y;
-        x := x + y;
-        !y;
-        !x
-    end;
-
+procedure fact;
 begin
-    y := 1;
-    call Q
+  if n = 0 then
+    result := 1;
+
+  if n > 0 then
+  begin
+    n := n - 1;
+    call fact;
+    result := result * (n + 1)
+  end
 end;
 
-
 begin
-    x := c;
-    call P
+  ? n;
+  call fact;
+  ! result
 end.

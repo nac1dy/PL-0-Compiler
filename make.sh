@@ -18,10 +18,16 @@ OUT_CL0="$COMPILED_DIR/out.cl0"
 cd "$ROOT_DIR"
 
 mkdir -p "$COMPILED_DIR"
+#if file out.cl0 exists, remove
+if [[ -f "$OUT_CL0" ]]; then
+  echo "for cleaner runs, removing existing output file: $OUT_CL0"
+  rm -f "$OUT_CL0"
+fi
+
 
 echo "[1/4] Compiling Java sources..."
 # Compile into src/ so 'java -cp src' can load classes reliably.
-javac -d "$SRC_DIR" $(find "$SRC_DIR" -name '*.java')
+javac -d "$SRC_DIR" $(find "$SRC_DIR" -name '*.java' ! -path '*/AST/*')
 
 echo "[2/4] Running PL/0 compiler on: $TEST_FILE"
 java -cp "$SRC_DIR" Compiler.Compiler "$TEST_FILE"
