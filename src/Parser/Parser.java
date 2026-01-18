@@ -40,7 +40,6 @@ public class Parser {
         try {
             Block block = block();
             consume(TokenType.DOT, "Expect '.' after program.");
-            // Danach MUSS direkt EOF kommen.
             consume(TokenType.EOF, "Expect end of file after '.'. Found: " + peek().type + " ('" + peek().lexeme + "')");
             return new Program(block);
         } catch (ParseError e) {
@@ -306,7 +305,6 @@ public class Parser {
     private Token consume(TokenType type, String message) {
         if (check(type)) return advance();
 
-        // Falls möglich, möglichst präzise Zeile setzen (aktuelles Token)
         if (!isAtEnd()) this.errorLine = peek().line;
         throw error(peek(), message);
     }

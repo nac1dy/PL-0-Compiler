@@ -111,11 +111,6 @@ public class Compiler {
             return;
         }
 
-
-
-
-
-
         System.out.println("\nAST:\n");
         System.out.println(new ASTPrinter().print(program));
     }

@@ -176,14 +176,6 @@ public class Lexer {
         return c >= '0' && c <= '9';
     }
 
-    //helper function for number() to lookahead one character without consuming
-    private char peekNext() {
-        if (current + 1 >= source.length()) return '\0';
-        return source.charAt(current + 1);
-    }
-
-
-
 
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
