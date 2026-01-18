@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * Debug-Printer für den AST.
- *
  * Ausgabeform: ASCII-Tree (Äste).
  */
 public class ASTPrinter implements Expr.Visitor<ASTPrinter.Node>, Condition.Visitor<ASTPrinter.Node>, Stmt.Visitor<ASTPrinter.Node> {

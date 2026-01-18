@@ -169,12 +169,11 @@ public class CodeGenerator {
 
             case Stmt.RepeatUntilStmt reapUnStmt -> {
 
-                int loopstart = pos();
+                int target = pos();
                 writeStmt(reapUnStmt.body, d, procnum);
                 writeCondition(reapUnStmt.condition, d, procnum);
                 int jumpPos = pos();
                 int base = jumpPos + 3;
-                int target = loopstart;
                 int offsetBack = target - base;
                 generateOpCode(Befehle.JumpIfFalse, offsetBack);
 

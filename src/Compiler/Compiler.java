@@ -37,9 +37,6 @@ public class Compiler {
         // but for now we just reset hadError after each line.
     }
 
-    public static String getFile() {
-        return File;
-    }
 
     // If file was passed, we call this function
     private static void runFile(String Path) throws IOException {

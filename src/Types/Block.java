@@ -1,12 +1,9 @@
 package Types;
 
-import Lexer.Token;
-
 import java.util.List;
 
 /**
  * PL/0-Block.
- *
  * (vereinfacht)
  *   block -> [constDecl] [varDecl] {procDecl} statement
  */

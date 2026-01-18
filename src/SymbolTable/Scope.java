@@ -1,7 +1,5 @@
 package SymbolTable;
 
-import Types.Expr;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +39,6 @@ public class Scope {
 
         if(local != null) return local;
         return parent != null ? parent.resolve(name) : null;
-    }
-
-
-    public ProcSymbol getOwner() {
-        return owner;
     }
     public int getLevel() {
         return level;

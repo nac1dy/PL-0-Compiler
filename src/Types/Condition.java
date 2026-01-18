@@ -1,7 +1,5 @@
 package Types;
 
-import java.util.List;
-
 import Lexer.Token;
 
 public abstract class Condition

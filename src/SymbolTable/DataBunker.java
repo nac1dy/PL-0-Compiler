@@ -61,10 +61,6 @@ public class DataBunker {
         return boundVariables;
     }
 
-    public List<Integer> getConstPool() {
-        return constPool;
-    }
-
     public String debugDump() {
         StringBuilder sb = new StringBuilder();
 
@@ -78,49 +74,41 @@ public class DataBunker {
 
         // 2) Procedures
         sb.append("\n-- Procedures (from procDeclToSymbol) --\n");
-        procDeclToSymbol.forEach((decl, sym) -> {
-            sb.append(String.format(
-                    "proc name=%s procNum=%d level=%d localVarCount=%d%n",
-                    sym.getName(),
-                    sym.getProcNum(),
-                    sym.getLevel(),
-                    sym.getLocalVarCounter()
-            ));
-        });
+        procDeclToSymbol.forEach((_, sym) -> sb.append(String.format(
+                "proc name=%s procNum=%d level=%d localVarCount=%d%n",
+                sym.getName(),
+                sym.getProcNum(),
+                sym.getLevel(),
+                sym.getLocalVarCounter()
+        )));
 
         // 3) Example bindings overview (optional but super useful)
         sb.append("\n-- Bindings: Assign targets --\n");
-        boundAssignTargets.forEach((stmt, varSym) -> {
-            sb.append(String.format(
-                    "assign '%s' -> VarSymbol(name=%s, level=%d, slot=%d)%n",
-                    stmt.name.lexeme,
-                    varSym.getName(),
-                    varSym.getLevel(),
-                    varSym.getSlot()
-            ));
-        });
+        boundAssignTargets.forEach((stmt, varSym) -> sb.append(String.format(
+                "assign '%s' -> VarSymbol(name=%s, level=%d, slot=%d)%n",
+                stmt.name.lexeme,
+                varSym.getName(),
+                varSym.getLevel(),
+                varSym.getSlot()
+        )));
 
         sb.append("\n-- Bindings: Input targets --\n");
-        boundInputTargets.forEach((stmt, varSym) -> {
-            sb.append(String.format(
-                    "input '%s' -> VarSymbol(name=%s, level=%d, slot=%d)%n",
-                    stmt.name.lexeme,
-                    varSym.getName(),
-                    varSym.getLevel(),
-                    varSym.getSlot()
-            ));
-        });
+        boundInputTargets.forEach((stmt, varSym) -> sb.append(String.format(
+                "input '%s' -> VarSymbol(name=%s, level=%d, slot=%d)%n",
+                stmt.name.lexeme,
+                varSym.getName(),
+                varSym.getLevel(),
+                varSym.getSlot()
+        )));
 
         sb.append("\n-- Bindings: Call targets --\n");
-        boundCallTargets.forEach((stmt, procSym) -> {
-            sb.append(String.format(
-                    "call '%s' -> ProcSymbol(name=%s, procNum=%d, level=%d)%n",
-                    stmt.name.lexeme,
-                    procSym.getName(),
-                    procSym.getProcNum(),
-                    procSym.getLevel()
-            ));
-        });
+        boundCallTargets.forEach((stmt, procSym) -> sb.append(String.format(
+                "call '%s' -> ProcSymbol(name=%s, procNum=%d, level=%d)%n",
+                stmt.name.lexeme,
+                procSym.getName(),
+                procSym.getProcNum(),
+                procSym.getLevel()
+        )));
 
         sb.append("\n-- Bindings: Variable expressions --\n");
         boundVariables.forEach((exprVar, sym) -> {

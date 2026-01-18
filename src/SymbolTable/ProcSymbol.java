@@ -21,7 +21,7 @@ public final class ProcSymbol extends Symbol {
     public int getLocalVarCounter() {
         return localVarCounter;
     }
-    public int allocateLocalVar() {
-        return localVarCounter++;
+    public void allocateLocalVar() {
+        localVarCounter++;
     }
 }

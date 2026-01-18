@@ -1,6 +1,5 @@
 package SymbolTable;
 
-import Types.Expr;
 
 public class SymbolTable
 {

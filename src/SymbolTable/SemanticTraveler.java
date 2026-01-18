@@ -12,8 +12,8 @@ public class SemanticTraveler implements Expr.Visitor<Void>, Stmt.Visitor<Void>,
     private final Map<Expr.Literal, Integer> boundLiterals = new HashMap<>();
     private final Map<ProcDecl, ProcSymbol> procDeclToSymbol = new HashMap<>();
 
-    private Map<Integer, Integer> valueToIndex = new HashMap<>();
-    private List<Integer> indexToValue = new ArrayList<>();
+    private final Map<Integer, Integer>  valueToIndex = new HashMap<>();
+    private final List<Integer> indexToValue = new ArrayList<>();
 
     private ProcSymbol currentProc; // ownerProc context
     int procnum = 0;
@@ -53,7 +53,7 @@ public class SemanticTraveler implements Expr.Visitor<Void>, Stmt.Visitor<Void>,
             int value = constDecl.value;
             int level = s.getCurrentScope().getLevel();
             int constIndex = getOrCreateConstIndex(value);
-            s.define(new ConstSymbol(name, level, constIndex, value));
+            s.define(new ConstSymbol(name, level, constIndex));
         }
         // varDecls
         for(VarDecl varDecl : block.varDecls)

@@ -2,7 +2,6 @@ package Types;
 
 /**
  * Root-Knoten der PL/0-Quelle.
- *
  * Grammatik:
  *   program -> block "." ;
  */
