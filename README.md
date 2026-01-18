@@ -13,7 +13,7 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 # Muss noch gemacht werden:
 
 - Commenting
-- Cleanupsdsdfsdf
+- Cleanup
 - Bessere Error Messages
 
 # Was macht der Code aktuell (kurzer Programmablauf):
