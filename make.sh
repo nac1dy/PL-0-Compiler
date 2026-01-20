@@ -30,8 +30,8 @@ echo "[1/4] Compiling Java sources..."
 javac -d "$SRC_DIR" $(find "$SRC_DIR" -name '*.java' ! -path '*/AST/*')
 
 echo "[2/4] Running PL/0 compiler on: $TEST_FILE"
-java -cp "$SRC_DIR" Compiler.Compiler "$TEST_FILE"
-
+#java -cp "$SRC_DIR" Compiler.Compiler "$TEST_FILE"
+java -cp "$SRC_DIR" Compiler.GUI "$TEST_FILE"
 if [[ ! -f "$OUT_CL0" ]]; then
   echo "ERROR: Expected output bytecode file not found: $OUT_CL0" >&2
   exit 1
