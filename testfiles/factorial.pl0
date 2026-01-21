@@ -9,11 +9,13 @@ begin
   begin
     n := n - 1;
     result := result * (n + 1);
+    !result;
     call fact
   end
 end;
 
 begin
   ? n;
+  result := 1;
   call fact
 end.

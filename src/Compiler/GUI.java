@@ -32,8 +32,10 @@ class GUI extends JFrame implements ActionListener {
     static JTextArea rightTA1;
     static JTextArea rightTA2;
     static JTextArea rightTA3;
+    static JTextArea rightTA4;
 
     static ProcessBuilder pb;
+    static ProcessBuilder pb2;
     static String command = """
             if [[ -x "compiled/r2432" ]]; then
               (cd "compiled" && ./r2432 out.cl0)
@@ -41,6 +43,13 @@ class GUI extends JFrame implements ActionListener {
               echo "WARN: compiled/r2432 not found or not executable; skipping execution." >&2
             fi
             """;
+
+    static String command2 = "if [[ -x \"compiled/outCl0\" ]]; then\n" +
+            "(cd \"compiled\" && ./outCl0 out.cl0) || \\\n" +
+            ">&2\n" +
+            "else\n" +
+            "  echo \"WARN: compiled/outCl0 not found or not executable; skipping disassembly.\" >&2\n" +
+            "fi";
 
     // pro Compile-Lauf: wurde etwas nach System.err geschrieben?
     private static volatile boolean hasCompilerErrors = false;
@@ -51,8 +60,12 @@ class GUI extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         pb = new ProcessBuilder("/bin/bash", "-c", command);
-
         pb.redirectErrorStream(true);
+
+        // pb2 war bislang nie initialisiert -> NullPointerException bei pb2.start()
+        pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
+        pb2.redirectErrorStream(true);
+
         frame = new JFrame("GUI PL/0 COMPILER");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 1000);
@@ -142,10 +155,11 @@ class GUI extends JFrame implements ActionListener {
         rightTA1 = new JTextArea();
         rightTA2 = new JTextArea();
         rightTA3 = new JTextArea();
-
+        rightTA4 = new JTextArea();
         rightTabs.addTab("AST", new JScrollPane(rightTA1));
         rightTabs.addTab("DataBunker-Infos", new JScrollPane(rightTA2));
         rightTabs.addTab("ByteCode", new JScrollPane(rightTA3));
+        rightTabs.addTab("Instructions", new JScrollPane(rightTA4));
 
         // ---------- CENTER zusammensetzen ----------
         gbc.gridx = 0;
@@ -340,11 +354,29 @@ class GUI extends JFrame implements ActionListener {
                     rightTA1.setText(new ASTPrinter().print(Compiler.getProgram()));
                     rightTA2.setText(Compiler.getBunkerOutput());
                     rightTA3.setText(Compiler.getBytecode_String());
+
                 }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
             process.waitFor();
+        } catch (InterruptedException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        try {
+            Process process2 = pb2.start();
+
+            StringBuilder disasm = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process2.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    disasm.append(line).append('\n');
+                }
+            }
+
+            process2.waitFor();
+            rightTA4.setText(disasm.toString());
+            rightTA4.setCaretPosition(0);
         } catch (InterruptedException | IOException ex) {
             throw new RuntimeException(ex);
         }
