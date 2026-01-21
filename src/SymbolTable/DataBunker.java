@@ -61,6 +61,24 @@ public class DataBunker {
         return boundVariables;
     }
 
+
+
+
+
+
+
+
+
+
+    //DEBUG HELPER//
+
+
+
+
+
+
+
+
     public String debugDump() {
         StringBuilder sb = new StringBuilder();
 

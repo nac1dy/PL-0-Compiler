@@ -1,22 +1,31 @@
-var n, result;
+var n, total;
 
-procedure fact;
-begin
-    !n;
-  if n = 0 then
-    result := 1;
+procedure outer;
 
-  if n > 0 then
+  var i, j;
+
+  procedure inner;
   begin
-    n := n - 1;
-    result := result * (n + 1);
-    !result;
-    call fact
-  end
+    total := 0;
+    j := i;
+
+    repeat
+      total := total + j;
+      j := j - 1
+    until j = 0
+  end;
+
+begin
+  i := n;
+
+  repeat
+    call inner;
+    !total;
+    i := i - 1
+  until i = 0
 end;
 
 begin
   ?n;
-  result := 1;
-  call fact
+  call outer
 end.

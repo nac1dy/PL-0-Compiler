@@ -12,9 +12,6 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 - **LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO**
 # Muss noch gemacht werden:
 
-- Commenting
-- Cleanup
-- Bessere Error Messages
 
 # Was macht der Code aktuell (kurzer Programmablauf):
 
@@ -27,9 +24,8 @@ Was ist schon "fertig" und was muss noch gemacht werden:
 
 # Aktuelle Probleme:
 
-- Fehler Handling fehlt
 
 
 # Plan für nächstes mal:
 
-ERROR MESSAGES **SCHÖNER** MACHEN
+Abnahme gespräch!
