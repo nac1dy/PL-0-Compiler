@@ -8,7 +8,7 @@ procedure p;
   procedure q;
   var c, x;
   begin
-    x := x + 1;
+    ?x
     y := y + 2;
     ! x;
     ! y
